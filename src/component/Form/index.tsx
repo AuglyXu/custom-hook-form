@@ -1,11 +1,11 @@
 import React, { useMemo, useRef, forwardRef, useImperativeHandle, useCallback } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { FormProps, InputType, Validate, OutFunction, ErrorType, TriggerParams } from './types'
+import { useForm } from 'react-hook-form';
+import { FormProps, InputType, Validate, OutFunction, TriggerParams } from './types'
 import FieldRender from './../FieldRender'
 
 const Form = forwardRef<OutFunction, FormProps>((props, ref) => {
-    const { formFields, defaultFormData, customCalc } = props;
-    const { control, formState: { errors }, trigger, getValues, handleSubmit, register, reset } = useForm({ defaultValues: defaultFormData });
+    const { formFields, defaultFormData, customCalc, privateProps } = props;
+    const { control, formState: { errors }, trigger, getValues, handleSubmit, reset, setValue } = useForm<InputType>({ defaultValues: defaultFormData });
 
     const validateResRef = useRef<Validate>({});
 
@@ -20,16 +20,21 @@ const Form = forwardRef<OutFunction, FormProps>((props, ref) => {
     }, [handleSubmit]);
 
     const onTrigger = useCallback(async (triggerParams: TriggerParams) => {
-        const { key, value, oldValue, needFormTrigger = true } = triggerParams;
+        const { key, value, needFormTrigger = true } = triggerParams;
         let customRes;
-        if(typeof customCalc === 'function'){
+        if (typeof customCalc === 'function') {
             customRes = await customCalc({
                 key,
                 value,
                 formData: getValues()
             })
         }
-    }, [])
+        const res = { ...customRes }
+        Object.keys(res).forEach(k => {
+            setValue(k, res[k])
+        })
+        if (needFormTrigger) trigger(key)
+    }, [getValues, setValue, trigger, customCalc])
 
     const inputRef = useRef<OutFunction>({
         trigger: async () => {
@@ -55,14 +60,11 @@ const Form = forwardRef<OutFunction, FormProps>((props, ref) => {
                         <React.Fragment key={name}>
                             <FieldRender
                                 control={control}
-                                errMsg={errors[name]?.message}
+                                errMsg={errors[name]?.message as string | undefined}
                                 field={field}
-                                getPopupContainer={getPopupContainer}
                                 getValues={getValues}
-                                heighestCurrency={heighestCurrency}
                                 onTrigger={onTrigger}
-                                privateProps={privateProps?.[identifier]}
-                                setWatch={setWatch}
+                                privateProps={privateProps?.[name]}
                             />
                         </React.Fragment>
                     )

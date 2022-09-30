@@ -1,24 +1,27 @@
-import React, { useMemo, memo } from 'react';
+import { useMemo, memo } from 'react';
 import classnames from 'classnames';
-import styles from './Field.module.less';
+import styles from './Field.module.less'
+import { FieldWrapProps } from './types'
+import { FormHelperText } from '@mui/material';
 
-function FieldWrap(props) {
-    const { children, errMsg, label, required, strongLabel, isInTable, outerStyle } = props;
+function FieldWrap(props: FieldWrapProps) {
+    const { children, errMsg, label, required, outerStyle, hideLabel } = props;
 
     const className = useMemo(() => {
-        return classnames(styles['field-wrap'], !!errMsg ? 'has-error' : 'has-success', { [styles.required]: required && !!label, [styles['in-table']]: isInTable });
-    }, [errMsg, required, label, isInTable]);
+        return classnames(styles['field-wrap'], !!errMsg ? 'has-error' : 'has-success', { [styles.required]: required && !!label });
+    }, [errMsg, required, label]);
 
     return (
-        <div className={className}
+        <div
+            className={className}
             style={{ ...outerStyle }}
         >
-            {label &&
-                <div className={classnames(styles['field-label'], { [styles.strong]: strongLabel })}>{label}</div>
+            {!hideLabel && label &&
+                <div className={classnames(styles['field-label'])}>{label}</div>
             }
             <div className={styles['item-children']}>{children}</div>
             {errMsg &&
-                <div className={styles['err-msg']}>{errMsg}</div>
+                <FormHelperText error>{errMsg}</FormHelperText>
             }
         </div>);
 }

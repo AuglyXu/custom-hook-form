@@ -1,22 +1,66 @@
-import React from 'react'
-import { Controller } from 'react-hook-form'
+import React, { useCallback } from 'react'
+import { Controller, RegisterOptions } from 'react-hook-form'
 import FieldWrap from './FieldWrap'
-import { FieldRenderProps } from './types'
+import { FieldRenderProps, ValidateFn } from './types'
+import { InputType } from './../Form/types'
 import { getField } from './FieldMap'
 
 const FieldRender: React.FC<FieldRenderProps> = (props) => {
-    const { field: { type: fieldType, property, name }, errMsg, getValues, control } = props
+    const { field: { type: fieldType, property, name }, errMsg, control, privateProps, outerStyle, onTrigger } = props
+
+    const { label, required, hideLabel } = property
 
     const Field = getField(fieldType)
+
+    const getRules = useCallback(() => {
+        const { maxLength, maxSelectLength, required } = property;
+        let rules: RegisterOptions<InputType> = {};
+        if (maxLength) {
+            rules.maxLength = {
+                value: maxLength,
+                message: `最多只能输入${maxLength}个字`
+            };
+        }
+        const ruleArr: Array<ValidateFn> = [];
+        if (required) {
+            rules.required = '请填写'
+        }
+        if (maxSelectLength) {
+            ruleArr.push((val) => {
+                if (val?.length > maxSelectLength) {
+                    return `选择不能超过${maxSelectLength}个`;
+                }
+            });
+        }
+        if (privateProps?.customRule) {
+            ruleArr.push(privateProps.customRule);
+        }
+        if (ruleArr.length) {
+            rules.validate = (val) => {
+                for (const fn of ruleArr) {
+                    const msg = fn(val);
+                    if (msg) return msg;
+                }
+            };
+        }
+
+        return rules;
+    }, [property, privateProps]);
 
     return (
         <Controller
             control={control}
             name={name}
-            render={({ field }) => {
-                const { onChange, onBlur, value, ref } = field;
+            rules={getRules()}
+            render={({ field: { onChange, onBlur, value, ref } }) => {
                 return (
-                    <FieldWrap>
+                    <FieldWrap
+                        errMsg={errMsg}
+                        label={label}
+                        outerStyle={outerStyle || {}}
+                        required={required}
+                        hideLabel={hideLabel}
+                    >
                         <Field
                             onBlur={onBlur}
                             // onChange={changeFn}
@@ -25,20 +69,19 @@ const FieldRender: React.FC<FieldRenderProps> = (props) => {
                              * @param {boolean} needFormTrigger 是否触发表单校验
                              * @param {boolean} needTrigger 是否触发表单联动、计算公式等逻辑
                              */
-                            onChange={(val, needTrigger = true) => {
+                            onChange={(val: any, needTrigger = true) => {
                                 onChange(val);
                                 needTrigger && onTrigger(
                                     {
-                                        key: identifier,
+                                        key: name,
                                         value: val,
-                                        oldValue: value,
-                                        needFormTrigger, // 需要触发表单校验
+                                        needFormTrigger: needTrigger, // 需要触发表单校验
+                                        oldValue: value
                                     }
                                 );
                             }}
                             ref={ref}
                             value={value}
-                            // {...getProps()}
                         />
                     </FieldWrap>
                 )

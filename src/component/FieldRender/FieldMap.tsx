@@ -1,7 +1,6 @@
-import React from 'react'
 import CustomInput from '../FormComponent/Input'
 
-const fieldMap: Record<string, React.FC> = {
+const fieldMap: Record<string, any> = {
     "Input": CustomInput
 }
 
