@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './App.css';
-import Form from './component/Form';
-import { OutFunction } from './component/Form/types'
+import Form from './component/HookForm';
+import { OutFunction } from './component/HookForm/types'
 interface FormData {
   game: number
 }

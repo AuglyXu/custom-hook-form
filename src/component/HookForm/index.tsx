@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, forwardRef, useImperativeHandle, useCallback } from 'react'
 import { useForm } from 'react-hook-form';
 import { FormProps, InputType, Validate, OutFunction, TriggerParams } from './types'
-import FieldRender from './../FieldRender'
+import FieldRender from '../FieldRender'
 
 const Form = forwardRef<OutFunction, FormProps>((props, ref) => {
     const { formFields, defaultFormData, customCalc, privateProps } = props;

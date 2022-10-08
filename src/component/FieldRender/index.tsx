@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Controller, RegisterOptions } from 'react-hook-form'
 import FieldWrap from './FieldWrap'
 import { FieldRenderProps, ValidateFn } from './types'
-import { InputType } from './../Form/types'
+import { InputType } from '../HookForm/types'
 import { getField } from './FieldMap'
 
 const FieldRender: React.FC<FieldRenderProps> = (props) => {
