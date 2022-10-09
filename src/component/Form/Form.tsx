@@ -1,82 +1,81 @@
-import React, { useMemo, useContext, cloneElement } from 'react';
-import { Controller } from 'react-hook-form';
-import FormContext from './context';
-import FieldWrap from '../FieldRender/FieldWrap';
-import { DEFUALT_ERR_MSG } from '../HookForm/validate';
+import React, { useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
+import { useForm, FormProvider, UseFormReturn } from 'react-hook-form';
+import { InputType, Validate } from '../HookForm/types';
+import { FormOutFunction, FormProps } from './type';
+import styles from './Form.module.less'
 
-function Item(props) {
+const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, FormProps> = (props, ref) => {
     const {
-        required,
-        name,
-        label,
-        hideLabel,
-        validate,
-        valuePropName,
-        message = DEFUALT_ERR_MSG,
+        defaultFormData,
         children,
-        renderChild,
-        onChange: handleChange,
+        onChange,
+        needWrap,
+        style
     } = props;
 
     const {
         control,
-        errors,
-        onChange: watchFn,
+        formState: { errors },
         trigger,
-    } = useContext(FormContext);
+        getValues,
+        setValue,
+        handleSubmit,
+        reset,
+        unregister,
+    } = useForm({ defaultValues: defaultFormData });
 
-    const rules = useMemo(() => {
-        if (validate) return { validate: (val) => validate(val) };
-        if (required) return { validate: (val) => !!val ? undefined : message };
-    }, [message, required, validate]);
+    const validateResRef = useRef<Validate>({});
 
-    const renderField = ({ field }) => {
-        const { onChange, onBlur, ref, value } = field;
-        const propName = valuePropName ? valuePropName : 'value';
-        let cd = cloneElement(children, {
-            [propName]: value,
-            ref,
-            onChange: (...args) => {
-                if (typeof handleChange === 'function') {
-                    handleChange(...args);
-                }
-                if (typeof watchFn === 'function') {
-                    watchFn(name, ...args);
-                }
-                onChange(...args);
-                trigger(name);
-            },
-            onBlur,
+    const contextValue: UseFormReturn<InputType, any> = useMemo(() => ({
+        errors,
+        control,
+        trigger,
+        onChange,
+    }) as unknown as UseFormReturn<InputType, any>, [control, errors, onChange, trigger]);
+
+    const onSubmit = useMemo(() => {
+        return handleSubmit((data) => {
+            validateResRef.current.isError = false;
+            validateResRef.current.res = data;
+        }, (err) => {
+            validateResRef.current.isError = true;
+            validateResRef.current.res = err;
         });
+    }, [handleSubmit]);
 
-        if (typeof renderChild === 'function') cd = renderChild(cd);
+    const formRef = useRef<FormOutFunction>({
+        trigger: async () => {
+            await onSubmit();
+            const { res, isError } = validateResRef.current;
+            console.log(res, isError)
+            if (isError) {
+                return Promise.reject(res);
+            }
+            return res;
+        },
+        getValues,
+        setValue,
+        reset,
+        unregister,
+    })
 
-        return (
-            <FieldWrap
-                errMsg={errors[name]?.message}
-                hideLabel={hideLabel}
-                label={label}
-                required={required}
-            >
-                {cd}
-            </FieldWrap>);
-    };
+    useImperativeHandle(ref, () => formRef.current, []);
 
-    return (!name ?
-        <FieldWrap
-            label={label}
-            required={required}
-            errMsg={errors[name]?.message}
-            hideLabel={hideLabel}
-        >
-            {children}
-        </FieldWrap> :
-        <Controller
-            control={control}
-            name={name}
-            render={renderField}
-            rules={rules}
-        />);
+    return (
+        <FormProvider {...contextValue}>
+            {needWrap ?
+                <div
+                    className={styles['form-wrap']}
+                    style={style}
+                >
+                    {children}
+                </div>
+                : children
+            }
+        </FormProvider>);
 }
 
-export default Item;
+const Form = forwardRef<FormOutFunction, FormProps>(InternalForm);
+
+export default Form;
+

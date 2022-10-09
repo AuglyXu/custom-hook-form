@@ -7,6 +7,8 @@ import { FormHelperText } from '@mui/material';
 function FieldWrap(props: FieldWrapProps) {
     const { children, errMsg, label, required, outerStyle = {}, hideLabel } = props;
 
+    console.log("errMsg", errMsg)
+
     const className = useMemo(() => {
         return classnames(styles['field-wrap'], !!errMsg ? 'has-error' : 'has-success', { [styles.required]: required && !!label });
     }, [errMsg, required, label]);

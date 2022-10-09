@@ -1,8 +1,19 @@
+import { UseFormGetValues, UseFormReset } from 'react-hook-form'
+import { ValidateFn } from './../FieldRender/types';
+
 enum Size {
     Half = 0.5,
     Full = 1
 }
-interface Property {
+
+export interface ValidateMap {
+    [propName: string]: Array<ValidateFn>;
+}
+
+export type ValidateMapType = { validate: ValidateMap }
+
+export type enhanceValidateFn = (property: Property) => ValidateFn
+export interface Property {
     websize: Size
     label: string
     required: boolean
@@ -10,7 +21,10 @@ interface Property {
     maxLength?: number
     maxSelectLength?: number
     hideLabel?: boolean
+    validate?: ValidateFn | Record<string, enhanceValidateFn>
 }
+
+export type CustomValidateMap = Record<string, enhanceValidateFn>
 
 export interface EachFields {
     type: string
@@ -18,7 +32,7 @@ export interface EachFields {
     property: Property
 }
 
-type FormFields = Array<EachFields>
+export type FormFields = Array<EachFields>
 
 type FormData = Record<string, any>
 
@@ -45,9 +59,9 @@ export type Validate = Partial<{
 }>
 
 export type OutFunction = {
-    reset: () => void,
-    getValues: () => InputType,
-    trigger: () => Promise<InputType> | InputType
+    reset: UseFormReset<InputType>,
+    getValues: UseFormGetValues<InputType>,
+    trigger: () => Promise<InputType> | InputType,
 } | undefined
 
 export interface TriggerParams {

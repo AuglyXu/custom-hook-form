@@ -4,6 +4,7 @@ import FieldWrap from './FieldWrap'
 import { FieldRenderProps, ValidateFn } from './types'
 import { InputType } from '../HookForm/types'
 import { getField } from './FieldMap'
+import validateMap, { normalValidate } from './../HookForm/validate';
 
 const FieldRender: React.FC<FieldRenderProps> = (props) => {
     const { field: { type: fieldType, property, name }, errMsg, control, privateProps, outerStyle, onTrigger } = props
@@ -23,7 +24,10 @@ const FieldRender: React.FC<FieldRenderProps> = (props) => {
         }
         const ruleArr: Array<ValidateFn> = [];
         if (required) {
-            rules.required = '请填写'
+            if (fieldType in validateMap) {
+                ruleArr.push(validateMap[fieldType](property));
+            }
+            else ruleArr.push(normalValidate);
         }
         if (maxSelectLength) {
             ruleArr.push((val) => {
@@ -43,9 +47,8 @@ const FieldRender: React.FC<FieldRenderProps> = (props) => {
                 }
             };
         }
-
         return rules;
-    }, [property, privateProps]);
+    }, [property, privateProps, fieldType]);
 
     return (
         <Controller

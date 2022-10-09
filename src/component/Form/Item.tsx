@@ -1,10 +1,12 @@
-import React, { useMemo, useContext, cloneElement } from 'react';
-import { Controller } from 'react-hook-form';
-import FormContext from './context';
+import { useMemo, cloneElement } from 'react';
+import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 import FieldWrap from '../FieldRender/FieldWrap';
-import { DEFUALT_ERR_MSG } from '../HookForm/validate';
+import { DEFAULT_ERR_MSG } from '../HookForm/validate';
+import { FormContextType, FormItemProps } from './type';
+import { CustomComponentProps } from './../FormComponent/types'
+import { InputType } from '../HookForm/types';
 
-function Item(props) {
+function Item(props: FormItemProps) {
     const {
         required,
         name,
@@ -12,7 +14,7 @@ function Item(props) {
         hideLabel,
         validate,
         valuePropName,
-        message = DEFUALT_ERR_MSG,
+        message = DEFAULT_ERR_MSG,
         children,
         renderChild,
         onChange: handleChange,
@@ -23,20 +25,21 @@ function Item(props) {
         errors,
         onChange: watchFn,
         trigger,
-    } = useContext(FormContext);
+    } = useFormContext() as FormContextType;
 
-    const rules = useMemo(() => {
+    const rules: RegisterOptions<InputType> = useMemo(() => {
         if (validate) return { validate: (val) => validate(val) };
         if (required) return { validate: (val) => !!val ? undefined : message };
+        return {}
     }, [message, required, validate]);
 
-    const renderField = ({ field }) => {
+    const renderField = ({ field }: { field: CustomComponentProps }) => {
         const { onChange, onBlur, ref, value } = field;
         const propName = valuePropName ? valuePropName : 'value';
         let cd = cloneElement(children, {
             [propName]: value,
             ref,
-            onChange: (...args) => {
+            onChange: (...args: any[]) => {
                 if (typeof handleChange === 'function') {
                     handleChange(...args);
                 }
@@ -44,7 +47,7 @@ function Item(props) {
                     watchFn(name, ...args);
                 }
                 onChange(...args);
-                trigger(name);
+                trigger && trigger(name);
             },
             onBlur,
         });
@@ -53,7 +56,7 @@ function Item(props) {
 
         return (
             <FieldWrap
-                errMsg={errors[name]?.message}
+                errMsg={errors?.[name]?.message as string}
                 hideLabel={hideLabel}
                 label={label}
                 required={required}

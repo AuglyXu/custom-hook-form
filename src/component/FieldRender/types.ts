@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { EachFields, InputType, TriggerParams } from '../HookForm/types'
-import { Control, UseFormGetValues } from 'react-hook-form'
+import { Control, UseFormGetValues, ValidateResult } from 'react-hook-form'
 
 export interface FieldRenderProps {
     field: EachFields
@@ -16,9 +16,9 @@ export interface FieldWrapProps {
     label: ReactNode
     required: boolean
     children: ReactNode
-    errMsg: string | undefined
-    hideLabel: boolean | undefined
+    errMsg?: string | undefined
+    hideLabel?: boolean | undefined
     outerStyle?: Record<string, any>
 }
 
-export type ValidateFn = (val: any) => string | void
+export type ValidateFn = (val: any) => ValidateResult | Promise<ValidateResult>
