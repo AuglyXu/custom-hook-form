@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { FieldWrapProps as InternalWrapProps } from './types'
 import { FormHelperText } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import styles from './FieldStyle'
+import styles from './FieldWrapStyle'
 
 interface FieldWrapProps extends WithStyles<typeof styles, true>, InternalWrapProps {}
 

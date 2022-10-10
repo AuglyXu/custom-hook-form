@@ -1,10 +1,10 @@
 import { useMemo, cloneElement } from 'react';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
-import FieldWrap from '../FieldRender/FieldWrap';
+import FieldWrap from '../FieldWrap';
 import { DEFAULT_ERR_MSG } from '../HookForm/validate';
-import { FormContextType, FormItemProps } from './type';
-import { CustomComponentProps } from '../FormComponent/types'
-import { InputType } from '../HookForm/types';
+import { FormContextType, FormItemProps } from './types';
+import { CustomComponentProps } from '../../FormComponent/types'
+import { HookFormData } from '../types';
 
 function Item(props: FormItemProps) {
     const {
@@ -27,7 +27,7 @@ function Item(props: FormItemProps) {
         trigger,
     } = useFormContext() as FormContextType;
 
-    const rules: RegisterOptions<InputType> = useMemo(() => {
+    const rules: RegisterOptions<HookFormData> = useMemo(() => {
         if (validate) return { validate: (val) => validate(val) };
         if (required) return { validate: (val) => !!val ? undefined : message };
         return {}

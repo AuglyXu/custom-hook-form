@@ -1,19 +1,19 @@
 import { useRef } from 'react';
 import './App.css';
-import HookForm from './component/HookForm';
+import HookForm from './component/InternalForm/HookForm';
 import Form from './component/Form'
-import { OutFunction } from './component/HookForm/types'
-import { FormOutFunction } from './component/Form/type';
+import { HookFormOutFunction } from './component/InternalForm/HookForm/types'
+import { FormOutFunction } from './component/Form/types';
 import { TextField } from '@mui/material';
 
-interface FormData {
+interface HookFormData {
   test: number
 }
 
-const defaultFormData: FormData = { test: 1 }
+const defaultFormData: HookFormData = { test: 1 }
 
 function App() {
-  const formRef = useRef<OutFunction>()
+  const formRef = useRef<HookFormOutFunction>()
   const secondFormRef = useRef<FormOutFunction>()
   const handleSubmit = async () => {
     await formRef.current?.trigger()

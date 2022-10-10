@@ -1,5 +1,4 @@
-import { UseFormGetValues, UseFormReset } from 'react-hook-form'
-import { ValidateFn } from '../FieldRender/types';
+import { ValidateFn, HookFormData } from '../types';
 
 enum Size {
     Half = 0.5,
@@ -13,6 +12,7 @@ export interface ValidateMap {
 export type ValidateMapType = { validate: ValidateMap }
 
 export type enhanceValidateFn = (property: Property) => ValidateFn
+
 export interface Property {
     websize: Size
     label: string
@@ -34,35 +34,16 @@ export interface EachFields {
 
 export type FormFields = Array<EachFields>
 
-type FormData = Record<string, any>
-
-export type InputType = {
-    [P in keyof FormData]: FormData[P]
-}
-
 export interface EachPrivateProps {
     customRule: (val: any) => string | undefined
 }
 
-
 export interface FormProps {
     formFields: FormFields
-    defaultFormData: FormData
-    customCalc?: (customObj: { key: string, value: any, formData: InputType }) => InputType
+    defaultFormData: HookFormData
+    customCalc?: (customObj: { key: string, value: any, formData: HookFormData }) => HookFormData
     privateProps?: Record<any, any>
 }
-
-
-export type Validate = Partial<{
-    res: InputType,
-    isError: boolean
-}>
-
-export type OutFunction = {
-    reset: UseFormReset<InputType>,
-    getValues: UseFormGetValues<InputType>,
-    trigger: () => Promise<InputType> | InputType,
-} | undefined
 
 export interface TriggerParams {
     key: string,

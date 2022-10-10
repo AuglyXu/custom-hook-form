@@ -1,10 +1,10 @@
-import { ValidateFn } from "../FieldRender/types"
-import { InputType } from '../HookForm/types'
-import { UseFormSetValue, UseFormGetValues, UseFormReset, UseFormUnregister, UseFormReturn, FieldErrors } from 'react-hook-form'
+import { ValidateFn } from "../types"
+import { HookFormData } from '../types'
+import { UseFormReturn, FieldErrors } from 'react-hook-form'
 
 export interface FormProps {
     children: React.ReactElement<any>
-    defaultFormData?: InputType
+    defaultFormData?: HookFormData
     onChange?: (name: string, ...arg: any[]) => any
     needWrap?: boolean
     style?: Record<string, any>
@@ -23,15 +23,7 @@ export interface FormItemProps {
     onChange?: (...rest: any[]) => any
 }
 
-export type FormOutFunction = {
-    reset: UseFormReset<InputType>
-    getValues: UseFormGetValues<InputType>
-    trigger: () => Promise<InputType> | InputType,
-    setValue: UseFormSetValue<InputType>
-    unregister: UseFormUnregister<InputType>
-} | undefined
-
-export type FormContextType = UseFormReturn<InputType> & {
+export type FormContextType = UseFormReturn<HookFormData> & {
     onChange: (name: string, ...arg: any[]) => any
-    errors: FieldErrors<InputType>
+    errors: FieldErrors<HookFormData>
 }

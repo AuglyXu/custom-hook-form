@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 import { Controller, RegisterOptions } from 'react-hook-form'
-import FieldWrap from './FieldWrap'
-import { FieldRenderProps, ValidateFn } from './types'
-import { InputType } from '../HookForm/types'
-import { getField } from './FieldMap'
+import FieldWrap from './../FieldWrap'
+import { FieldRenderProps } from '../FieldWrap/types'
+import { ValidateFn, HookFormData } from '../types'
+import { getField } from './../../FormComponent/FieldMap'
 import validateMap, { normalValidate } from '../HookForm/validate';
 
 const FieldRender: React.FC<FieldRenderProps> = (props) => {
@@ -15,7 +15,7 @@ const FieldRender: React.FC<FieldRenderProps> = (props) => {
 
     const getRules = useCallback(() => {
         const { maxLength, maxSelectLength, required } = property;
-        let rules: RegisterOptions<InputType> = {};
+        let rules: RegisterOptions<HookFormData> = {};
         if (maxLength) {
             rules.maxLength = {
                 value: maxLength,

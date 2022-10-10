@@ -1,14 +1,6 @@
-import InternalForm from './Form'
-import Item from './Item'
+import Form from './InternalForm'
+import HookForm from './HookForm'
 
-type InternalFormType = typeof InternalForm;
-
-interface FormInterface extends InternalFormType {
-    Item: typeof Item;
-}
-
-const Form = InternalForm as FormInterface;
-
-Form.Item = Item
+export { HookForm }
 
 export default Form

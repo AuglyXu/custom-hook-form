@@ -1,16 +1,20 @@
 import React, { useMemo, useRef, forwardRef, useImperativeHandle } from 'react';
 import { useForm, FormProvider, UseFormReturn } from 'react-hook-form';
-import { InputType, Validate } from '../HookForm/types';
-import { FormOutFunction, FormProps } from './type';
-import styles from './Form.module.less'
+import { HookFormData, Validate, FormOutFunction } from '../types';
+import { FormProps } from './types';
+import { withStyles, WithStyles } from '@mui/styles'
+import styles from './FormStyle'
 
-const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, FormProps> = (props, ref) => {
+interface InternalFormProps extends WithStyles<typeof styles, true>, FormProps {}
+
+const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, InternalFormProps> = (props, ref) => {
     const {
         defaultFormData,
         children,
         onChange,
         needWrap,
-        style
+        style,
+        classes
     } = props;
 
     const {
@@ -26,12 +30,12 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, FormProps> =
 
     const validateResRef = useRef<Validate>({});
 
-    const contextValue: UseFormReturn<InputType, any> = useMemo(() => ({
+    const contextValue: UseFormReturn<HookFormData, any> = useMemo(() => ({
         errors,
         control,
         trigger,
         onChange,
-    }) as unknown as UseFormReturn<InputType, any>, [control, errors, onChange, trigger]);
+    }) as unknown as UseFormReturn<HookFormData, any>, [control, errors, onChange, trigger]);
 
     const onSubmit = useMemo(() => {
         return handleSubmit((data) => {
@@ -64,7 +68,7 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, FormProps> =
         <FormProvider {...contextValue}>
             {needWrap ?
                 <div
-                    className={styles['form-wrap']}
+                    className={classes['formWrap']}
                     style={style}
                 >
                     {children}
@@ -74,7 +78,7 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, FormProps> =
         </FormProvider>);
 }
 
-const Form = forwardRef<FormOutFunction, FormProps>(InternalForm);
+const Form = withStyles(styles)(forwardRef<FormOutFunction, InternalFormProps>(InternalForm));
 
 export default Form;
 

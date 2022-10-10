@@ -1,14 +1,14 @@
 import { ReactNode } from 'react'
-import { EachFields, InputType, TriggerParams } from '../HookForm/types'
-import { Control, UseFormGetValues, ValidateResult } from 'react-hook-form'
+import { EachFields, TriggerParams } from '../HookForm/types'
+import { Control, UseFormGetValues } from 'react-hook-form'
 
 export interface FieldRenderProps {
     field: EachFields
-    control: Control<InputType>
+    control: Control<HookFormData>
     errMsg: string | undefined
-    getValues: UseFormGetValues<InputType>
+    getValues: UseFormGetValues<HookFormData>
     onTrigger: (params: TriggerParams) => Promise<void>
-    privateProps?: InputType | undefined
+    privateProps?: HookFormData | undefined
     outerStyle?: Record<string, any>
 }
 
@@ -20,5 +20,3 @@ export interface FieldWrapProps {
     hideLabel?: boolean | undefined
     outerStyle?: Record<string, any>
 }
-
-export type ValidateFn = (val: any) => ValidateResult | Promise<ValidateResult>
