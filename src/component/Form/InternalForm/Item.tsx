@@ -8,7 +8,7 @@ import { HookFormData } from '../types';
 
 function Item(props: FormItemProps) {
     const {
-        required,
+        required = false,
         name,
         label,
         hideLabel,
@@ -29,11 +29,19 @@ function Item(props: FormItemProps) {
 
     const rules: RegisterOptions<HookFormData> = useMemo(() => {
         if (validate) return { validate: (val) => validate(val) };
-        if (required) return { validate: (val) => !!val ? undefined : message };
+        if (required) return { validate: (val) => {
+            if(Array.isArray(val)) { // 如果值是数组，判断是否存在元素
+                return val.length ? undefined : message
+            }
+            return !!val ? undefined : message
+        } };
         return {}
     }, [message, required, validate]);
 
     const renderField = ({ field }: { field: CustomComponentProps }) => {
+        // 没有name走到这里有问题
+        if(!name) return <div />;
+        
         const { onChange, onBlur, ref, value } = field;
         const propName = valuePropName ? valuePropName : 'value';
         let cd = cloneElement(children, {

@@ -1,4 +1,5 @@
 import { ValidateFn, HookFormData } from '../types';
+import { Control, UseFormGetValues } from 'react-hook-form'
 
 enum Size {
     Half = 0.5,
@@ -50,4 +51,14 @@ export interface TriggerParams {
     value: any,
     oldValue: any,
     needFormTrigger: boolean
+}
+
+export interface FieldRenderProps {
+    field: EachFields
+    control: Control<HookFormData>
+    errMsg: string | undefined
+    getValues: UseFormGetValues<HookFormData>
+    onTrigger: (params: TriggerParams) => Promise<void>
+    privateProps?: HookFormData | undefined
+    outerStyle?: Record<string, any>
 }

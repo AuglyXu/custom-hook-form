@@ -5,7 +5,8 @@ import { FormProps } from './types';
 import { withStyles, WithStyles } from '@mui/styles'
 import styles from './FormStyle'
 
-interface InternalFormProps extends WithStyles<typeof styles, true>, FormProps {}
+interface InternalFormProps extends WithStyles<typeof styles>, FormProps {
+}
 
 const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, InternalFormProps> = (props, ref) => {
     const {

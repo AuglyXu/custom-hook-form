@@ -19,16 +19,12 @@ const style = (theme: Theme) => createStyles({
         width: '100%',
     },
     required: {
-        '&::before': {
+        '&::after': {
             content: "'*'",
             color: theme.palette.error.main,
             display: 'inline-block',
             fontSize: '14px',
-            position: 'absolute',
-            top: 0,
-            left: '5px',
-            bottom: 0,
-            margin: 0,
+            margin: '0 0 0 10px',
             height: '10px',
         }
     },

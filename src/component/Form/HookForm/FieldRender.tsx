@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Controller, RegisterOptions } from 'react-hook-form'
 import FieldWrap from './../FieldWrap'
-import { FieldRenderProps } from '../FieldWrap/types'
+import { FieldRenderProps } from './types'
 import { ValidateFn, HookFormData } from '../types'
 import { getField } from './../../FormComponent/FieldMap'
 import validateMap, { normalValidate } from '../HookForm/validate';
@@ -60,7 +60,7 @@ const FieldRender: React.FC<FieldRenderProps> = (props) => {
                     <FieldWrap
                         errMsg={errMsg}
                         label={label}
-                        outerStyle={outerStyle || {}}
+                        outerStyle={outerStyle}
                         required={required}
                         hideLabel={hideLabel}
                     >

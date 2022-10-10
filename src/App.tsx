@@ -1,47 +1,33 @@
-import { useRef } from 'react';
-import './App.css';
-import HookForm from './component/InternalForm/HookForm';
-import Form from './component/Form'
-import { HookFormOutFunction } from './component/InternalForm/HookForm/types'
-import { FormOutFunction } from './component/Form/types';
-import { TextField } from '@mui/material';
+import React from 'react'
+import { Divider, Typography } from '@mui/material';
+import { withStyles, WithStyles } from '@mui/styles';
+import styles from './AppStyle';
+import BasicFormDemo from './Demo/BasicFormDemo'
+import CustomValidateDemo from './Demo/CustomValidateDemo';
+import CustomFormComponent from './Demo/CustomFormComponent';
+import CustomLayout from './Demo/CustomLayout'
+import CustomWrapperComponent from './Demo/CustomWrapperComponent'
 
-interface HookFormData {
-  test: number
-}
+interface AppProps extends WithStyles<typeof styles> { }
 
-const defaultFormData: HookFormData = { test: 1 }
-
-function App() {
-  const formRef = useRef<HookFormOutFunction>()
-  const secondFormRef = useRef<FormOutFunction>()
-  const handleSubmit = async () => {
-    await formRef.current?.trigger()
-    await secondFormRef.current?.trigger()
-  }
+const App: React.FC<AppProps> = (props: AppProps) => {
+  const { classes } = props
   return (
     <>
-      {/* <HookForm
-        defaultFormData={defaultFormData}
-        formFields={[{
-          type: "Input",
-          name: 'test',
-          property: {
-            websize: 0.5,
-            label: 'test',
-            required: true
-          }
-        }]}
-        ref={formRef}
-      /> */}
-      <Form ref={secondFormRef}>
-        <Form.Item name="xuxianzhe" required label='123'>
-          <TextField />
-        </Form.Item>
-      </Form>
-      <button onClick={handleSubmit}>提交</button>
+      <Typography variant="h5" gutterBottom>
+        静态表单
+      </Typography>
+      <BasicFormDemo />
+      <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
+      <CustomValidateDemo />
+      <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
+      <CustomFormComponent />
+      <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
+      <CustomLayout />
+      <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
+      <CustomWrapperComponent />
     </>
   );
 }
 
-export default App;
+export default withStyles(styles)(App);

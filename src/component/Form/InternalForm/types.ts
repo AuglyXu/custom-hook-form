@@ -1,9 +1,10 @@
+import { CustomComponentProps } from './../../FormComponent/types';
 import { ValidateFn } from "../types"
 import { HookFormData } from '../types'
 import { UseFormReturn, FieldErrors } from 'react-hook-form'
 
 export interface FormProps {
-    children: React.ReactElement<any>
+    children: React.ReactNode
     defaultFormData?: HookFormData
     onChange?: (name: string, ...arg: any[]) => any
     needWrap?: boolean
@@ -11,9 +12,9 @@ export interface FormProps {
 }
 
 export interface FormItemProps {
-    required: boolean
-    name: string
-    children: React.ReactElement<any>,
+    children: React.ReactElement<CustomComponentProps>,
+    required?: boolean
+    name?: string
     renderChild?: (callback: React.ReactElement<any, string | React.JSXElementConstructor<any>>) => React.ReactElement<any>,
     label?: string
     hideLabel?: boolean
