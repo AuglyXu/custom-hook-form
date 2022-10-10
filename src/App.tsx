@@ -4,6 +4,8 @@ import HookForm from './component/HookForm';
 import Form from './component/Form'
 import { OutFunction } from './component/HookForm/types'
 import { FormOutFunction } from './component/Form/type';
+import { TextField } from '@mui/material';
+
 interface FormData {
   test: number
 }
@@ -16,7 +18,6 @@ function App() {
   const handleSubmit = async () => {
     await formRef.current?.trigger()
     await secondFormRef.current?.trigger()
-    console.log("通过校验")
   }
   return (
     <>
@@ -34,8 +35,8 @@ function App() {
         ref={formRef}
       /> */}
       <Form ref={secondFormRef}>
-        <Form.Item name="xuxianzhe" required>
-          <input />
+        <Form.Item name="xuxianzhe" required label='123'>
+          <TextField />
         </Form.Item>
       </Form>
       <button onClick={handleSubmit}>提交</button>

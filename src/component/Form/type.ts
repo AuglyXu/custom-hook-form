@@ -1,5 +1,5 @@
 import { ValidateFn } from "../FieldRender/types"
-import { InputType } from './../HookForm/types'
+import { InputType } from '../HookForm/types'
 import { UseFormSetValue, UseFormGetValues, UseFormReset, UseFormUnregister, UseFormReturn, FieldErrors } from 'react-hook-form'
 
 export interface FormProps {

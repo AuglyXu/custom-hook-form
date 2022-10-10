@@ -3,7 +3,7 @@ import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 import FieldWrap from '../FieldRender/FieldWrap';
 import { DEFAULT_ERR_MSG } from '../HookForm/validate';
 import { FormContextType, FormItemProps } from './type';
-import { CustomComponentProps } from './../FormComponent/types'
+import { CustomComponentProps } from '../FormComponent/types'
 import { InputType } from '../HookForm/types';
 
 function Item(props: FormItemProps) {

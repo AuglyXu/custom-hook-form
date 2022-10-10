@@ -1,17 +1,18 @@
-import { useMemo, memo } from 'react';
+import React, { useMemo, memo } from 'react';
 import classnames from 'classnames';
-import styles from './Field.module.less'
-import { FieldWrapProps } from './types'
+import { FieldWrapProps as InternalWrapProps } from './types'
 import { FormHelperText } from '@mui/material';
+import { withStyles, WithStyles } from '@mui/styles';
+import styles from './FieldStyle'
 
-function FieldWrap(props: FieldWrapProps) {
-    const { children, errMsg, label, required, outerStyle = {}, hideLabel } = props;
+interface FieldWrapProps extends WithStyles<typeof styles, true>, InternalWrapProps {}
 
-    console.log("errMsg", errMsg)
+const FieldWrap: React.FC<FieldWrapProps> = (props: FieldWrapProps) => {
+    const { children, errMsg, label, required, outerStyle = {}, hideLabel, classes } = props;
 
     const className = useMemo(() => {
-        return classnames(styles['field-wrap'], !!errMsg ? 'has-error' : 'has-success', { [styles.required]: required && !!label });
-    }, [errMsg, required, label]);
+        return classnames(classes['fieldWrap'], !!errMsg ? 'has-error' : 'has-success', { [classes.required]: required && !!label });
+    }, [errMsg, required, label, classes]);
 
     return (
         <div
@@ -19,13 +20,13 @@ function FieldWrap(props: FieldWrapProps) {
             style={{ ...outerStyle }}
         >
             {!hideLabel && label &&
-                <div className={classnames(styles['field-label'])}>{label}</div>
+                <div className={classnames(classes['fieldLabel'])}>{label}</div>
             }
-            <div className={styles['item-children']}>{children}</div>
+            <div>{children}</div>
             {errMsg &&
                 <FormHelperText error>{errMsg}</FormHelperText>
             }
         </div>);
 }
 
-export default memo(FieldWrap);
+export default withStyles(styles, { withTheme: true })(memo(FieldWrap));

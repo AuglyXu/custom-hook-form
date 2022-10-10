@@ -4,7 +4,7 @@ import FieldWrap from './FieldWrap'
 import { FieldRenderProps, ValidateFn } from './types'
 import { InputType } from '../HookForm/types'
 import { getField } from './FieldMap'
-import validateMap, { normalValidate } from './../HookForm/validate';
+import validateMap, { normalValidate } from '../HookForm/validate';
 
 const FieldRender: React.FC<FieldRenderProps> = (props) => {
     const { field: { type: fieldType, property, name }, errMsg, control, privateProps, outerStyle, onTrigger } = props

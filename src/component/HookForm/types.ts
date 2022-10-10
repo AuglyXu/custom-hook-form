@@ -1,5 +1,5 @@
 import { UseFormGetValues, UseFormReset } from 'react-hook-form'
-import { ValidateFn } from './../FieldRender/types';
+import { ValidateFn } from '../FieldRender/types';
 
 enum Size {
     Half = 0.5,

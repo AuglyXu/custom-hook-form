@@ -47,7 +47,6 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, FormProps> =
         trigger: async () => {
             await onSubmit();
             const { res, isError } = validateResRef.current;
-            console.log(res, isError)
             if (isError) {
                 return Promise.reject(res);
             }
