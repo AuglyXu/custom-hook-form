@@ -8,6 +8,7 @@ import CustomFormComponent from './Demo/CustomFormComponent';
 import CustomLayout from './Demo/CustomLayout'
 import CustomWrapperComponent from './Demo/CustomWrapperComponent'
 import DynamicFormBasicDemo from './Demo/DynamicFormBasicDemo';
+import GlobalWatchFormDemo from './Demo/GlobalWatchFormDemo';
 
 interface AppProps extends WithStyles<typeof styles> { }
 
@@ -25,6 +26,8 @@ const App: React.FC<AppProps> = (props: AppProps) => {
       <CustomFormComponent />
       <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
       <CustomLayout />
+      <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
+      <GlobalWatchFormDemo />
       <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
       <CustomWrapperComponent />
       <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
