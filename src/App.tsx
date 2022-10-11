@@ -9,6 +9,7 @@ import CustomLayout from './Demo/CustomLayout'
 import CustomWrapperComponent from './Demo/CustomWrapperComponent'
 import DynamicFormBasicDemo from './Demo/DynamicFormBasicDemo';
 import GlobalWatchFormDemo from './Demo/GlobalWatchFormDemo';
+import DynamicPropsFormDemo from './Demo/DynamicPropsFormDemo';
 
 interface AppProps extends WithStyles<typeof styles> { }
 
@@ -35,6 +36,8 @@ const App: React.FC<AppProps> = (props: AppProps) => {
         动态大剂量表单
       </Typography>
       <DynamicFormBasicDemo />
+      <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
+      <DynamicPropsFormDemo />
     </>
   );
 }

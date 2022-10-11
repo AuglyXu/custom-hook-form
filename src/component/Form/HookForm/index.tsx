@@ -55,7 +55,7 @@ const Form = forwardRef<HookFormOutFunction, FormProps>((props, ref) => {
     useImperativeHandle(ref, () => inputRef.current, []);
 
     return formFields ?
-        <Grid container justifyContent="start" alignItems="center">
+        <Grid container justifyContent="start" alignItems="start">
             {
                 formFields.map((field, i) => {
                     const { name } = field;

@@ -3,6 +3,7 @@ import Form from './../component/Form';
 import { FormOutFunction } from './../component/Form/types'
 import { TextField, Button, Typography, RadioGroup, FormControlLabel, Radio, Switch } from '@mui/material';
 
+/** 基础表单使用demo */
 function BasicFormDemo() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {

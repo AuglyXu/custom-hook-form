@@ -4,6 +4,7 @@ import { FormOutFunction } from './../component/Form/types'
 import { Button, Typography } from '@mui/material';
 import TransferList from '../component/FormComponent/TransferList';
 
+/** 自定义组件 */
 function CustomFormComponent() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {

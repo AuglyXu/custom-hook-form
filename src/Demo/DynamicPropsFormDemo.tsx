@@ -1,52 +1,58 @@
-import { useRef, useCallback } from 'react';
+import { useRef } from 'react';
 import { HookForm } from './../component/Form';
-import { HookFormOutFunction, CustomCalcType } from './../component/Form/types'
+import { HookFormOutFunction } from './../component/Form/types'
 import { Button, Typography } from '@mui/material';
 import { Entry, Size } from '../component/FormComponent/types';
 
 const formFields = [
     {
-        type: 'TransferList',
-        name: 'test6',
-        label: 'test6',
+        type: 'TextField',
+        name: 'test1',
+        label: 'test1',
         required: true,
         property: {
-            websize: Size.Full,
+            websize: Size.Half,
+        }
+    },
+    {
+        type: 'TransferList',
+        name: 'test2',
+        label: 'test2',
+        required: true,
+        property: {
+            websize: Size.Half,
         }
     }
 ]
 
+const privateProps = {
+    'test2': {
+        adornment: 'kg'
+    }
+}
+
 /** 动态表单的自定义校验 */
-function DynamicFormBasicDemo() {
+function DynamicPropsFormDemo() {
     const formRef = useRef<HookFormOutFunction>()
     const handleSubmit = async () => {
         const res = await formRef.current?.trigger()
         console.log('校验通过', res)
     }
 
-    const customCalc = useCallback(({ key, value, formData } : CustomCalcType) => {
-        console.log(value)
-        if(key === 'test4') {
-            return {
-                test5: value * 2
-            }
-        }
-    },[])
-    
     return (
         <>
             <Typography variant="subtitle1" gutterBottom>
-                基础表单——渲染加部分联动逻辑
+                基础表单——PrivateProps(针对自定义组件的特殊逻辑)
             </Typography>
             <HookForm
                 ref={formRef}
                 formFields={formFields}
                 entry={Entry.NEW}
-                customCalc={customCalc}
+                privateProps={privateProps}
             />
             <Button variant="outlined" onClick={handleSubmit}>提交</Button>
         </>
     );
 }
 
-export default DynamicFormBasicDemo;
+export default DynamicPropsFormDemo;

@@ -2,8 +2,8 @@ import { useRef } from 'react';
 import Form from './../component/Form';
 import { FormOutFunction } from './../component/Form/types'
 import { TextField, Button, Typography } from '@mui/material';
-import TransferList from './../component/FormComponent/TransferList'
 
+/** 静态表单自定义校验 */
 function CustomValidateDemo() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {

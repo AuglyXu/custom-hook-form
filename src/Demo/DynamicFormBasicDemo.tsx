@@ -17,10 +17,13 @@ const formFields = [
     {
         type: 'TextField',
         name: 'test2',
-        label: 'test2',
+        label: 'test2 readOnly',
         required: false,
         property: {
             websize: Size.Half,
+            InputProps: {
+                readOnly: true,
+            }
         }
     },
     {
@@ -61,6 +64,7 @@ const formFields = [
     }
 ]
 
+/** 动态表单Demo */
 function DynamicFormBasicDemo() {
     const formRef = useRef<HookFormOutFunction>()
     const handleSubmit = async () => {
@@ -68,15 +72,14 @@ function DynamicFormBasicDemo() {
         console.log('校验通过', res)
     }
 
-    const customCalc = useCallback(({ key, value, formData } : CustomCalcType) => {
-        console.log(value)
-        if(key === 'test4') {
+    const customCalc = useCallback(({ key, value, formData }: CustomCalcType) => {
+        if (key === 'test4') {
             return {
                 test5: value * 2
             }
         }
-    },[])
-    
+    }, [])
+
     return (
         <>
             <Typography variant="subtitle1" gutterBottom>

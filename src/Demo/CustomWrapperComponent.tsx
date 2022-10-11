@@ -3,6 +3,7 @@ import Form from '../component/Form';
 import { FormOutFunction } from '../component/Form/types'
 import { Button, Typography, TextField } from '@mui/material';
 
+/** 表单组件非直接包裹 */
 function CustomLayout() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {
@@ -23,7 +24,7 @@ function CustomLayout() {
             <Form ref={formRef}>
                 <Form.Item name="test1" required label='有label带校验' renderChild={(child) => (
                     <div>
-                        包裹着Form的div
+                        包裹着表单组件的div
                         {child}
                     </div>
                 )}>
