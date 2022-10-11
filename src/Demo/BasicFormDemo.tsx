@@ -16,7 +16,7 @@ function BasicFormDemo() {
             </Typography>
             <Form ref={formRef}>
                 <Form.Item name="test1" required label='有label带校验'>
-                    <TextField size='small' />
+                    <TextField size='small'/>
                 </Form.Item>
                 <Form.Item name="test2" required label='test2' hideLabel>
                     <TextField size='small' />

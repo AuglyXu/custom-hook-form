@@ -1,10 +1,7 @@
-import { ValidateFn, HookFormData } from '../types';
+import { ReactNode } from 'react'
 import { Control, UseFormGetValues } from 'react-hook-form'
-
-enum Size {
-    Half = 0.5,
-    Full = 1
-}
+import { ValidateFn, HookFormData } from '../types';
+import { Size, Entry } from './../../FormComponent/types';
 
 export interface ValidateMap {
     [propName: string]: Array<ValidateFn>;
@@ -16,21 +13,23 @@ export type enhanceValidateFn = (property: Property) => ValidateFn
 
 export interface Property {
     websize: Size
-    label: string
-    required: boolean
+    isFieldReadOnly?: boolean,
     placeholder?: string
     maxLength?: number
     maxSelectLength?: number
     hideLabel?: boolean
     validate?: ValidateFn | Record<string, enhanceValidateFn>
+    valuePropName?: string
 }
 
 export type CustomValidateMap = Record<string, enhanceValidateFn>
-
 export interface EachFields {
     type: string
     name: string
+    label: ReactNode
+    required: boolean
     property: Property
+    hideLabel?: boolean
 }
 
 export type FormFields = Array<EachFields>
@@ -41,9 +40,11 @@ export interface EachPrivateProps {
 
 export interface FormProps {
     formFields: FormFields
-    defaultFormData: HookFormData
-    customCalc?: (customObj: { key: string, value: any, formData: HookFormData }) => HookFormData
+    entry: Entry,
+    defaultFormData?: HookFormData
+    customCalc?: (customObj: { key: string, value: any, formData: HookFormData }) => HookFormData | undefined
     privateProps?: Record<any, any>
+    publicProps?: Record<any, any>
 }
 
 export interface TriggerParams {
@@ -59,6 +60,8 @@ export interface FieldRenderProps {
     errMsg: string | undefined
     getValues: UseFormGetValues<HookFormData>
     onTrigger: (params: TriggerParams) => Promise<void>
+    entry: Entry,
     privateProps?: HookFormData | undefined
+    publicProps?: HookFormData | undefined
     outerStyle?: Record<string, any>
 }

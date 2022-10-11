@@ -1,4 +1,5 @@
-import { FormFields, EachFields, Property, CustomValidateMap, ValidateMap, ValidateMapType } from './types'
+import { FormFields, EachFields, ValidateMap, ValidateMapType } from './types'
+import { validate } from '../../FormComponent/validate';
 
 interface FormMap {
     FORM: Array<EachFields>
@@ -32,20 +33,11 @@ export const getValidateType = (type: string) => {
 /** 普通校验 */
 export const normalValidate = (value: any) => {
     if (Array.isArray(value)) return (value.length ? undefined : DEFAULT_ERR_MSG);
-    return !!value ? undefined : DEFAULT_ERR_MSG;
+    return (value !== null && value !== undefined && value !== '') ? undefined : DEFAULT_ERR_MSG;
 };
 
 /** 最大长度校验 */
 export const maxLengthValidate = (maxLength: number) => (value: any) => value?.length < maxLength ? undefined : `最多只能输入${maxLength}个字`;
-
-const validate: CustomValidateMap = {
-    // 自定义校验
-    CustomInput: (property: Property) => (value: any) => {
-        if (value !== '1') {
-            return '输入的值不为1'
-        }
-    }
-};
 
 export const getValidateMap = (formFields: FormFields): { validate: ValidateMap } => {
     /**
@@ -55,8 +47,8 @@ export const getValidateMap = (formFields: FormFields): { validate: ValidateMap 
      * }
      */
     const _map: ValidateMap = {}; // 校验方法
-    formFields.forEach(({ property, name, type }) => {
-        if (property && property.required) {
+    formFields.forEach(({ property, name, type, required }) => {
+        if (required) {
             if (typeof property.validate === 'function') {
                 _map[name] = [property.validate];
             }

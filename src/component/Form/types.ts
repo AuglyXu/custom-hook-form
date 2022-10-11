@@ -27,3 +27,9 @@ export type HookFormOutFunction = {
     getValues: UseFormGetValues<HookFormData>,
     trigger: () => Promise<HookFormData> | HookFormData,
 } | undefined
+
+export interface CustomCalcType {
+    key: string,
+    value: any,
+    formData: HookFormData
+}

@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { FormProps, TriggerParams } from './types'
 import { HookFormData, Validate, HookFormOutFunction } from '../types'
 import FieldRender from './FieldRender'
+import { Grid } from '@mui/material';
 
 const Form = forwardRef<HookFormOutFunction, FormProps>((props, ref) => {
-    const { formFields, defaultFormData, customCalc, privateProps } = props;
+    const { formFields, defaultFormData, customCalc, privateProps, publicProps, entry } = props;
     const { control, formState: { errors }, trigger, getValues, handleSubmit, reset, setValue } = useForm<HookFormData>({ defaultValues: defaultFormData });
 
     const validateResRef = useRef<Validate>({});
@@ -31,7 +32,7 @@ const Form = forwardRef<HookFormOutFunction, FormProps>((props, ref) => {
                 formData: getValues()
             })
         }
-        const res = { ...customRes }
+        const res = { ...(customRes || {}) }
         Object.keys(res).forEach(k => {
             setValue(k, res[k])
         })
@@ -54,7 +55,7 @@ const Form = forwardRef<HookFormOutFunction, FormProps>((props, ref) => {
     useImperativeHandle(ref, () => inputRef.current, []);
 
     return formFields ?
-        <React.Fragment>
+        <Grid container justifyContent="start" alignItems="center">
             {
                 formFields.map((field, i) => {
                     const { name } = field;
@@ -67,12 +68,14 @@ const Form = forwardRef<HookFormOutFunction, FormProps>((props, ref) => {
                                 getValues={getValues}
                                 onTrigger={onTrigger}
                                 privateProps={privateProps?.[name]}
+                                publicProps={publicProps}
+                                entry={entry}
                             />
                         </React.Fragment>
                     )
                 })
             }
-        </React.Fragment>
+        </Grid>
         : null
 })
 

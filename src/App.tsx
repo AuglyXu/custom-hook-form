@@ -7,6 +7,7 @@ import CustomValidateDemo from './Demo/CustomValidateDemo';
 import CustomFormComponent from './Demo/CustomFormComponent';
 import CustomLayout from './Demo/CustomLayout'
 import CustomWrapperComponent from './Demo/CustomWrapperComponent'
+import DynamicFormBasicDemo from './Demo/DynamicFormBasicDemo';
 
 interface AppProps extends WithStyles<typeof styles> { }
 
@@ -26,6 +27,11 @@ const App: React.FC<AppProps> = (props: AppProps) => {
       <CustomLayout />
       <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
       <CustomWrapperComponent />
+      <Divider variant='middle' classes={{ root: classes.dividerMargin }} />
+      <Typography variant="h5" gutterBottom>
+        动态大剂量表单
+      </Typography>
+      <DynamicFormBasicDemo />
     </>
   );
 }

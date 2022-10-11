@@ -13,7 +13,7 @@ function CustomLayout() {
     return (
         <>
             <Typography variant="subtitle1" gutterBottom>
-                自定义Layout(放成两排)
+                自定义Layout(放成两排, 栅格为 8 4 4 8)
             </Typography>
             <Grid container spacing={2}>
                 <Form ref={formRef}>
@@ -27,7 +27,7 @@ function CustomLayout() {
                             <TextField size='small' />
                         </Form.Item>
                     </Grid>
-                    <Grid xs={8}>
+                    <Grid xs={4}>
                         <Form.Item label="单选框" required={false} name="test3">
                             <RadioGroup
                                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -38,7 +38,7 @@ function CustomLayout() {
                             </RadioGroup>
                         </Form.Item>
                     </Grid>
-                    <Grid xs={4}>
+                    <Grid xs={8}>
                         <Form.Item label="表单值不从value属性上拿" required={true} name="test4" valuePropName='checked'>
                             <FormControlLabel
                                 control={

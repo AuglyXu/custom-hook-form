@@ -11,7 +11,6 @@ const style = (theme: Theme) => createStyles({
         overflow: 'auto',
         position: 'relative',
     },
-
     fieldWrap: {
         position: 'relative',
         margin: '0 0 16px',
