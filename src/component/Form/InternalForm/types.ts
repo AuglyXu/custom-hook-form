@@ -9,6 +9,8 @@ export interface FormProps {
     onChange?: (name: string, ...arg: any[]) => any
     needWrap?: boolean
     style?: Record<string, any>
+    shrink?: boolean // 是否需要边距
+    renderSubmitButton?: (object: { isDirty: boolean, isValid: boolean }) => React.ReactNode
 }
 
 export interface FormItemProps {
@@ -22,9 +24,13 @@ export interface FormItemProps {
     valuePropName?: string
     message?: string
     onChange?: (...rest: any[]) => any
+    customValidateKey?: Array<string>
+    outerStyle?: Record<string, any>
+    customErrorText?: boolean
 }
 
 export type FormContextType = UseFormReturn<HookFormData> & {
     onChange: (name: string, ...arg: any[]) => any
     errors: FieldErrors<HookFormData>
+    shrink?: boolean
 }

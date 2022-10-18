@@ -33,6 +33,9 @@ const style = (theme: Theme) => createStyles({
     fieldLabel: {
         color: '#757575',
         fontSize: '13px',
+    },
+    shrinkStyle: {
+        marginBottom: 0
     }
 })
 

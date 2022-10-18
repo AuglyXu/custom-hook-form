@@ -7,4 +7,6 @@ export interface FieldWrapProps {
     errMsg?: string | undefined
     hideLabel?: boolean | undefined
     outerStyle?: Record<string, any>
+    shrink?: boolean
+    customErrorText?: boolean
 }

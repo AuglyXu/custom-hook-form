@@ -1,14 +1,16 @@
 import { useRef } from 'react';
 import Form from '../component/Form';
-import { FormOutFunction } from '../component/Form/types'
+import { FormOutFunction, HookFormData } from '../component/Form/types'
 import { Button, Typography, TextField } from '@mui/material';
 
 /** 表单组件非直接包裹 */
 function CustomLayout() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {
-        const res = await formRef.current?.trigger()
-        console.log('校验通过', res)
+        const { res, isError } = await formRef.current?.trigger() as { res: HookFormData, isError: boolean }
+        if (!isError) {
+            console.log('校验通过', res)
+        }
     }
     const changeValue = () => {
         formRef.current?.setValue('test1', 111)

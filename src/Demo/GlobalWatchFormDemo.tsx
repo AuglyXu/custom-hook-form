@@ -1,13 +1,15 @@
 import { useRef } from 'react';
 import Form from './../component/Form';
-import { FormOutFunction } from './../component/Form/types'
+import { FormOutFunction, HookFormData } from './../component/Form/types'
 import { TextField, Button, Typography, RadioGroup, FormControlLabel, Radio, Switch } from '@mui/material';
 
 function GlobalWatchFormDemo() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {
-        const res = await formRef.current?.trigger()
-        console.log('校验通过', res)
+        const { res, isError } = await formRef.current?.trigger() as { res: HookFormData, isError: boolean }
+        if (!isError) {
+            console.log('校验通过', res)
+        }
     }
     return (
         <>
@@ -20,7 +22,7 @@ function GlobalWatchFormDemo() {
                     console.log(name, "改变了", value)
 
                 }
-                else{
+                else {
                     console.log(name, "改变了", rest[0].target.value)
                 }
             }}>

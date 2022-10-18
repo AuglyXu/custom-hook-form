@@ -8,18 +8,21 @@ import styles from './FieldWrapStyle'
 interface FieldWrapProps extends WithStyles<typeof styles, true>, InternalWrapProps { }
 
 const FieldWrap: React.FC<FieldWrapProps> = (props: FieldWrapProps) => {
-    const { children, errMsg, label, required, outerStyle = {}, hideLabel, classes } = props;
+    const { children, errMsg, label, required, outerStyle = {}, hideLabel, classes, shrink, customErrorText } = props;
 
     return (
         <div
-            className={classnames(classes['fieldWrap'], !!errMsg ? 'has-error' : 'has-success')}
+            className={classnames(classes['fieldWrap'], !!errMsg ? 'has-error' : 'has-success', { [classes.shrinkStyle]: shrink })}
             style={{ ...outerStyle }}
         >
-            {!hideLabel && label &&
-                <div className={classnames(classes['fieldLabel'], { [classes.required]: required })}>{label}</div>
+            {
+                (!hideLabel && label) ?
+                    <div className={classnames(classes['fieldLabel'], { [classes.required]: required, [classes.shrinkStyle]: shrink })}>{label}</div>
+                    :
+                    <div style={{ height: shrink ? 20 : 29 }} />  // 撑起高度, 20px的字体高度+9px的margin, 在 +1 像素
             }
             <div>{children}</div>
-            {errMsg &&
+            {!customErrorText && errMsg &&
                 <FormHelperText error>{errMsg}</FormHelperText>
             }
         </div>);

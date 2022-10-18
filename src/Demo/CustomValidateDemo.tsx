@@ -1,14 +1,16 @@
 import { useRef } from 'react';
 import Form from './../component/Form';
-import { FormOutFunction } from './../component/Form/types'
+import { FormOutFunction, HookFormData } from './../component/Form/types'
 import { TextField, Button, Typography } from '@mui/material';
 
 /** 静态表单自定义校验 */
 function CustomValidateDemo() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {
-        const res = await formRef.current?.trigger()
-        console.log('校验通过', res)
+        const { res, isError } = await formRef.current?.trigger() as { res: HookFormData, isError: boolean }
+        if (!isError) {
+            console.log('校验通过', res)
+        }
     }
     return (
         <>

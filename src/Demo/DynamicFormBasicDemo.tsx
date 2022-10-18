@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react';
 import { HookForm } from './../component/Form';
-import { HookFormOutFunction, CustomCalcType } from './../component/Form/types'
+import { HookFormOutFunction, CustomCalcType, HookFormData } from './../component/Form/types'
 import { Button, Typography } from '@mui/material';
 import { Entry, Size } from '../component/FormComponent/types';
 
@@ -68,8 +68,10 @@ const formFields = [
 function DynamicFormBasicDemo() {
     const formRef = useRef<HookFormOutFunction>()
     const handleSubmit = async () => {
-        const res = await formRef.current?.trigger()
-        console.log('校验通过', res)
+        const { res, isError } = await formRef.current?.trigger() as { res: HookFormData, isError: boolean }
+        if (!isError) {
+            console.log('校验通过', res)
+        }
     }
 
     const customCalc = useCallback(({ key, value, formData }: CustomCalcType) => {

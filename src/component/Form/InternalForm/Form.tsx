@@ -5,6 +5,7 @@ import { FormProps } from './types';
 import { withStyles, WithStyles } from '@mui/styles'
 import styles from './FormStyle'
 
+
 interface InternalFormProps extends WithStyles<typeof styles>, FormProps {
 }
 
@@ -15,12 +16,14 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, InternalForm
         onChange,
         needWrap,
         style,
-        classes
+        classes,
+        shrink, // 取消 label 间边距以及每个 Form.Item 的边距
+        renderSubmitButton
     } = props;
 
     const {
         control,
-        formState: { errors },
+        formState: { errors, isDirty, isValid },
         trigger,
         getValues,
         setValue,
@@ -36,7 +39,8 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, InternalForm
         control,
         trigger,
         onChange,
-    }) as unknown as UseFormReturn<HookFormData, any>, [control, errors, onChange, trigger]);
+        shrink
+    }) as unknown as UseFormReturn<HookFormData, any>, [control, errors, onChange, trigger, shrink]);
 
     const onSubmit = useMemo(() => {
         return handleSubmit((data) => {
@@ -51,17 +55,14 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, InternalForm
     const formRef = useRef<FormOutFunction>({
         trigger: async () => {
             await onSubmit();
-            const { res, isError } = validateResRef.current;
-            if (isError) {
-                return Promise.reject(res);
-            }
-            return res;
+            return validateResRef.current;
         },
         getValues,
         setValue,
         reset,
-        unregister,
+        unregister
     })
+
 
     useImperativeHandle(ref, () => formRef.current, []);
 
@@ -76,10 +77,10 @@ const InternalForm: React.ForwardRefRenderFunction<FormOutFunction, InternalForm
                 </div>
                 : children
             }
+            { renderSubmitButton && renderSubmitButton({ isValid, isDirty }) }
         </FormProvider>);
 }
 
 const Form = withStyles(styles)(forwardRef<FormOutFunction, InternalFormProps>(InternalForm));
 
 export default Form;
-

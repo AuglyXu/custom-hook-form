@@ -1,14 +1,16 @@
 import { useRef } from 'react';
 import Form from './../component/Form';
-import { FormOutFunction } from './../component/Form/types'
+import { FormOutFunction, HookFormData } from './../component/Form/types'
 import { TextField, Button, Typography, RadioGroup, FormControlLabel, Radio, Switch } from '@mui/material';
 
 /** 基础表单使用demo */
 function BasicFormDemo() {
     const formRef = useRef<FormOutFunction>()
     const handleSubmit = async () => {
-        const res = await formRef.current?.trigger()
-        console.log('校验通过', res)
+        const { res, isError } = await formRef.current?.trigger() as { res: HookFormData, isError: boolean }
+        if (!isError) {
+            console.log('校验通过', res)
+        }
     }
     return (
         <>
@@ -17,7 +19,7 @@ function BasicFormDemo() {
             </Typography>
             <Form ref={formRef}>
                 <Form.Item name="test1" required label='有label带校验'>
-                    <TextField size='small'/>
+                    <TextField size='small' />
                 </Form.Item>
                 <Form.Item name="test2" required label='test2' hideLabel>
                     <TextField size='small' />
